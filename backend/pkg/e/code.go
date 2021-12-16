@@ -1,10 +1,9 @@
 package e
 
 const (
-	SUCCESS        = 200
-	ERROR          = 500
-	INVALID_PARAMS = 400
-
+	SUCCESS                 = 200
+	ERROR                   = 500
+	INVALID_PARAMS          = 400
 	ERROR_EXIST_TAG         = 10001
 	ERROR_NOT_EXIST_TAG     = 10002
 	ERROR_NOT_EXIST_ARTICLE = 10003
@@ -19,4 +18,9 @@ const (
 	ERROR_UPLOAD_CHECK_IMAGE_FAIL = 30002
 	// 校验图片错误，图片格式或大小有问题
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT = 30003
+
+	ERROR_ADD_ARTICLE = 40001
+
+	ERROR_ADD_TAG = 50001
+	INVALID_ID    = 60001
 )

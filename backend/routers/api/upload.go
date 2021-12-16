@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
-	"github.com/csDeng/go-gin-example/pkg/e"
-	"github.com/csDeng/go-gin-example/pkg/logging"
-	"github.com/csDeng/go-gin-example/pkg/upload"
+	"github.com/csDeng/blog/pkg/e"
+	"github.com/csDeng/blog/pkg/logging"
+	"github.com/csDeng/blog/pkg/upload"
 	"github.com/gin-gonic/gin"
 )
 

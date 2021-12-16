@@ -4,16 +4,20 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/csDeng/go-gin-example/models"
-	"github.com/csDeng/go-gin-example/pkg/logging"
-	"github.com/csDeng/go-gin-example/pkg/setting"
-	"github.com/csDeng/go-gin-example/routers"
+	"github.com/csDeng/blog/models"
+	"github.com/csDeng/blog/pkg/gredis"
+	"github.com/csDeng/blog/pkg/logging"
+	"github.com/csDeng/blog/pkg/setting"
+	"github.com/csDeng/blog/routers"
 )
 
 func main() {
 	setting.Setup()
 	models.Setup()
 	logging.Setup()
+
+	// 启用redis
+	gredis.Setup()
 	router := routers.InitRouter()
 
 	s := &http.Server{

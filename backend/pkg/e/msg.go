@@ -4,6 +4,7 @@ var MsgFlags = map[int]string{
 	SUCCESS:                        "ok",
 	ERROR:                          "fail",
 	INVALID_PARAMS:                 "请求参数错误",
+	INVALID_ID:                     "id必须大于0",
 	ERROR_EXIST_TAG:                "已存在该标签名称",
 	ERROR_NOT_EXIST_TAG:            "该标签不存在",
 	ERROR_NOT_EXIST_ARTICLE:        "该文章不存在",
@@ -15,6 +16,9 @@ var MsgFlags = map[int]string{
 	ERROR_UPLOAD_SAVE_IMAGE_FAIL:    "保存图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FAIL:   "检查图片失败",
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT: "校验图片错误，图片格式或大小有问题",
+
+	ERROR_ADD_ARTICLE: "添加文章失败",
+	ERROR_ADD_TAG:     "添加标签失败",
 }
 
 func GetMsg(code int) string {

@@ -3,11 +3,11 @@ package routers
 import (
 	"net/http"
 
-	"github.com/csDeng/go-gin-example/middleware/jwt"
-	"github.com/csDeng/go-gin-example/pkg/setting"
-	"github.com/csDeng/go-gin-example/pkg/upload"
-	"github.com/csDeng/go-gin-example/routers/api"
-	v1 "github.com/csDeng/go-gin-example/routers/api/v1"
+	"github.com/csDeng/blog/middleware/jwt"
+	"github.com/csDeng/blog/pkg/setting"
+	"github.com/csDeng/blog/pkg/upload"
+	"github.com/csDeng/blog/routers/api"
+	v1 "github.com/csDeng/blog/routers/api/v1"
 	"github.com/gin-gonic/gin"
 )
 

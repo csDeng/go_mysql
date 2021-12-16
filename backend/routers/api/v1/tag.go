@@ -4,24 +4,15 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/csDeng/go-gin-example/models"
-	"github.com/csDeng/go-gin-example/pkg/e"
-	"github.com/csDeng/go-gin-example/pkg/setting"
-	"github.com/csDeng/go-gin-example/pkg/util"
+	"github.com/csDeng/blog/models"
+	"github.com/csDeng/blog/pkg/app"
+	"github.com/csDeng/blog/pkg/e"
+	"github.com/csDeng/blog/pkg/setting"
+	"github.com/csDeng/blog/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"github.com/unknwon/com"
 )
-
-type Tag struct {
-	Name string `json:"name" validate:"required"`
-	// State     int    `json:"state" validate:"required,min=0,max=1"`
-	// tag不能有空格
-	// 0不符合required
-	State      int    `json:"state" validate:"min=0,max=1"`
-	CreatedBy  string `json:"created_by" `
-	ModifiedBy string `json:"modified_by"`
-}
 
 var validate *validator.Validate
 
@@ -57,8 +48,9 @@ func GetTags(c *gin.Context) {
 
 func AddTag(c *gin.Context) {
 	// 配置参数校验
+	appG := app.Gin{c}
 	validate = validator.New()
-	json := &Tag{}
+	json := &models.Tag{}
 	c.BindJSON(json)
 
 	code := e.INVALID_PARAMS
@@ -80,26 +72,22 @@ func AddTag(c *gin.Context) {
 			code = e.ERROR_EXIST_TAG
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": data,
-	})
+	appG.Response(http.StatusOK, code, data)
 }
 
 func EditTag(c *gin.Context) {
+	appG := app.Gin{c}
 	id := com.StrTo(c.Param("id")).MustInt()
 
 	validate = validator.New()
-	json := &Tag{}
+	json := &models.Tag{}
 	c.BindJSON(json)
 	err := validate.Struct(json)
 	code := e.INVALID_PARAMS
-
+	data := make(map[string]interface{})
 	if err == nil {
 		code = e.SUCCESS
 		if models.ExistTagByID(id) {
-			data := make(map[string]interface{})
 			data["modified_by"] = json.ModifiedBy
 			if json.Name != "" {
 				data["name"] = json.Name
@@ -112,14 +100,11 @@ func EditTag(c *gin.Context) {
 			code = e.ERROR_NOT_EXIST_TAG
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": make(map[string]string),
-	})
+	appG.Response(http.StatusOK, code, data)
 }
 
 func DeleteTag(c *gin.Context) {
+	appG := app.Gin{c}
 	id := com.StrTo(c.Param("id")).MustInt()
 	var code int
 	var data = make(map[string]string)
@@ -135,9 +120,5 @@ func DeleteTag(c *gin.Context) {
 			code = e.ERROR_NOT_EXIST_TAG
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": data,
-	})
+	appG.Response(http.StatusOK, code, data)
 }

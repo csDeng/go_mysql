@@ -4,12 +4,12 @@ type Article struct {
 	Model
 	TagID         int    `json:"tag_id" gorm:"index"`
 	Tag           Tag    `json:"tag"`
-	Title         string `json:"title"`
-	Desc          string `json:"desc"`
-	Content       string `json:"content"`
+	Title         string `json:"title" validate:"required"`
+	Desc          string `json:"desc" `
+	Content       string `json:"content" validate:"required"`
 	CreatedBy     string `json:"created_by"`
 	ModifiedBy    string `json:"modified_by"`
-	State         int    `json:"state"`
+	State         int    `json:"state" validate:"min=0,max=1"`
 	CoverImageUrl string `json:"cover_image_url"`
 }
 

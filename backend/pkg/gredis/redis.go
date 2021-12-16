@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/csDeng/go-gin-example/pkg/setting"
+	"github.com/csDeng/blog/pkg/setting"
 	"github.com/gomodule/redigo/redis"
 )
 

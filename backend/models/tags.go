@@ -2,11 +2,13 @@ package models
 
 type Tag struct {
 	Model
-
-	Name       string `json:"name"`
+	// State     int    `json:"state" validate:"required,min=0,max=1"`
+	// tag不能有空格
+	// 0不符合required
+	Name       string `json:"name" validate:"required"`
 	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
-	State      int    `json:"state"`
+	State      int    `json:"state" validate:"min=0,max=1"`
 }
 
 func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {

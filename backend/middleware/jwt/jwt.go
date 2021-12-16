@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/csDeng/go-gin-example/pkg/e"
-	"github.com/csDeng/go-gin-example/pkg/util"
+	"github.com/csDeng/blog/pkg/e"
+	"github.com/csDeng/blog/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 

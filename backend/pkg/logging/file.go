@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/csDeng/go-gin-example/pkg/file"
-	"github.com/csDeng/go-gin-example/pkg/setting"
+	"github.com/csDeng/blog/pkg/file"
+	"github.com/csDeng/blog/pkg/setting"
 )
 
 func getLogFilePath() string {

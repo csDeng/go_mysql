@@ -3,7 +3,7 @@ package util
 import (
 	"time"
 
-	"github.com/csDeng/go-gin-example/pkg/setting"
+	"github.com/csDeng/blog/pkg/setting"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 

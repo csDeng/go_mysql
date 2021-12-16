@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/csDeng/go-gin-example/models"
+	"github.com/csDeng/blog/models"
 	"github.com/robfig/cron"
 )
 

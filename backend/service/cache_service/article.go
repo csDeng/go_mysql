@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/csDeng/go-gin-example/pkg/e"
+	"github.com/csDeng/blog/pkg/e"
 )
 
 type Article struct {
