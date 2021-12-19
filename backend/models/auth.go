@@ -2,16 +2,61 @@ package models
 
 type Auth struct {
 	// 转码成gorm的时候，ID改成primary_key, 转码成json的时候,叫id
-	ID       int    `gorm:"primary_key" json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Model
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
+	Level    string `json:"level" gorm:"default:0;comment:0是普通用户,1是管理员;size:5"`
 }
 
 func CheckAuth(username, password string) bool {
 	var auth Auth
 	db.Select("id").Where(Auth{Username: username, Password: password}).First(&auth)
-	if auth.ID > 0 {
-		return true
-	}
-	return false
+	return auth.ID > 0
+}
+
+func UsernameIsExisted(username string) bool {
+	// 获取第一条匹配的记录
+	var auth Auth
+	db.Select("id").Where("username = ?", username).First(&auth)
+	return auth.ID > 0
+
+}
+func UserIsExistedBYId(id int) bool {
+	var auth Auth
+	db.Select("id").Where("id = ?", id).First(&auth)
+	return auth.ID > 0
+}
+
+func AddUser(username, password string) bool {
+	db.Create(&Auth{
+		Username: username,
+		Password: password,
+	})
+	return true
+}
+
+func GetUserById(id int) (user Auth) {
+	db.Where("id = ?", id).First(&user)
+	return
+}
+func GetUsers(pageNum int,
+	pageSize int,
+	maps interface{}) (users []Auth) {
+	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&users)
+	return
+}
+
+func GetUserTotal(maps interface{}) (count int) {
+	db.Model(&Auth{}).Where(maps).Count(&count)
+	return
+}
+
+func EditUser(id int, data interface{}) bool {
+	db.Model(&Auth{}).Where("id = ?", id).Updates(data)
+	return true
+}
+
+func DeleteUser(id int) bool {
+	db.Where("id = ?", id).Delete(&Auth{})
+	return true
 }

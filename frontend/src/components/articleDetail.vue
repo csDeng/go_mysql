@@ -8,7 +8,7 @@
             </a-button>
         </div>
         <div  class='context'>
-            <vue-markdown class='markdown-body'>{{article.body}}</vue-markdown>
+            <vue-markdown class='markdown-body'>{{article.content}}</vue-markdown>
         </div>
     </a-card>
   </div>

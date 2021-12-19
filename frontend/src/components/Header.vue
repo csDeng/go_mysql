@@ -103,7 +103,7 @@ export default {
   position: -webkit-sticky;
   position: sticky;
   top: 0px;
-  z-index:9999;
+  // z-index:9999;
   // background:#EEF0F5;
 }
 #logo {

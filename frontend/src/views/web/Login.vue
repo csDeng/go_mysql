@@ -97,7 +97,7 @@ export default {
               password,
             });
             console.log("login res=>", res);
-            const { status, data } = res;
+            const { code:status, data } = res;
             console.log("登录结果res", res);
             if (status === 200) {
               this.$message.success("登录成功").then(() => {

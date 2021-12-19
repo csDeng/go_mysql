@@ -8,19 +8,19 @@
           >
           <div class='tips'>
             <div class="time">
-              创建时间：{{ article.created}}
+              创建时间:{{ article.created_on}}
             </div>
             <!-- <div class="categories">
               类别：
               <a-tag v-for="t in article.categories" :key="t">{{t}}</a-tag>
             </div> -->
             <div class="tags">
-              标签：
-               <a-tag v-for="t in article.tags" :key="t">{{t}} </a-tag>
+              标签:
+               <a-tag >{{article.tag.name}} </a-tag>
             </div>
           </div>
           <div class="context">
-            <vue-markdown class='markdown-body'>{{article.body}}</vue-markdown>
+            <vue-markdown class='markdown-body'>{{article.content}}</vue-markdown>
           </div>
         </a-card>
         <div class="kong"></div>
@@ -51,8 +51,8 @@ export default {
   },
   async mounted() {
     await this.$api.Article.get_index().then((r) => {
-      console.log('index',r)
-      this.articles = r.data;
+      // console.log('index',r)
+      this.articles = r.data.lists;
     });
   },
   methods: {

@@ -70,3 +70,5 @@ Vue.use(Button)
     .use(Modal)
     .use(Progress)
 ;
+
+export default Vue;

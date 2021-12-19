@@ -19,11 +19,12 @@ var validate *validator.Validate
 // 获取所有标签，或者根据query name进行查询
 func GetTags(c *gin.Context) {
 
+	appG := app.Gin{c}
 	name := c.Query("name")
 
 	maps := make(map[string]interface{})
 	data := make(map[string]interface{})
-
+	code := e.SUCCESS
 	if name != "" {
 		maps["name"] = name
 	}
@@ -34,16 +35,11 @@ func GetTags(c *gin.Context) {
 		maps["state"] = state
 	}
 
-	code := e.SUCCESS
-
 	data["lists"] = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
 	data["total"] = models.GetTagTotal(maps)
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-		"data": data,
-	})
+	appG.Response(http.StatusOK, code, data)
+
 }
 
 func AddTag(c *gin.Context) {

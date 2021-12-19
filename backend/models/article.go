@@ -29,6 +29,11 @@ func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Articl
 	return
 }
 
+func GetArticleIndex() (articles []Article) {
+	db.Preload("Tag").Order("created_on desc").Offset(0).Limit(5).Find(&articles)
+	return
+}
+
 func GetArticle(id int) (article Article) {
 	db.Where("id = ?", id).First(&article)
 	db.Model(&article).Related(&article.Tag)

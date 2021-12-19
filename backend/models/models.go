@@ -14,7 +14,7 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID         int `gorm:"primary_key" json:"id"`
+	ID         int `gorm:"primary_key;autoIncrement" json:"id"`
 	CreatedOn  int `json:"created_on"`
 	ModifiedOn int `json:"modified_on"`
 	DeletedOn  int `json:"deleted_on"`
@@ -45,6 +45,12 @@ func Setup() {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
+	auth := &Auth{}
+	article := &Article{}
+	tag := &Tag{}
+
+	// 自动迁移表结构
+	db.AutoMigrate(auth, article, tag)
 }
 
 func CloseDB() {

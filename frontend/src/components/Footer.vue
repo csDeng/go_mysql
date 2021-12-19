@@ -3,7 +3,7 @@
     <a-button @click="backTop">回到顶部</a-button>
     <p>
       <a-icon type="copyright" />
-      2021-2050 flask  <br />
+      2021-2050 vue & go  <br />
       <!-- <a-icon type="link" />dcs 版权所有 -->
     </p>
     <p>本博客已启动 {{ day }} 天</p>
@@ -21,9 +21,7 @@ export default {
     };
   },
   created() {
-    this.$api.Utils.getDate().then((r) => {
-      this.day = r.data.day;
-    });
+    this.day =this.$api.Utils.getDate();
   },
   mounted(){
 

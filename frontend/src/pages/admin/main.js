@@ -11,8 +11,9 @@ Vue.prototype.$api = api
 
 Vue.use(less)
 
-new Vue({
+const app = new Vue({
   render: h => h(App),
   router,
   store
-}).$mount('#app')
+}).$mount('#app');
+export default app;

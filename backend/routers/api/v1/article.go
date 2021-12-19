@@ -27,6 +27,15 @@ type Article struct {
 	CoverImageUrl string `json:"cover_image_url"`
 }
 
+// 获取首页的文章
+func GetArticleIndex(c *gin.Context) {
+	appG := app.Gin{c}
+	code := e.SUCCESS
+	data := make(map[string]interface{})
+	data["lists"] = models.GetArticleIndex()
+	appG.Response(http.StatusOK, code, data)
+}
+
 //获取单个文章
 // params : id
 func GetArticle(c *gin.Context) {
@@ -82,8 +91,9 @@ func GetArticles(c *gin.Context) {
 	code := e.INVALID_PARAMS
 	if len(data) == 0 {
 		code = e.SUCCESS
-		data["lists"] = models.GetArticles(util.GetPage(c), setting.AppSetting.PageSize, maps)
+		offset := util.GetPage(c)
 		data["total"] = models.GetArticleTotal(maps)
+		data["lists"] = models.GetArticles(offset, setting.AppSetting.PageSize, maps)
 	} else {
 		code = e.INVALID_PARAMS
 	}

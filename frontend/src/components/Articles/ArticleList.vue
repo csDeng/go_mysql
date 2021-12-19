@@ -1,5 +1,5 @@
 <template>
-  <div id='list'>
+  <div id="list">
     <a-list
       class="demo-loadmore-list"
       :loading="loading"
@@ -7,7 +7,7 @@
       :data-source="data"
       v-if="!detail"
     >
-      <!-- <div
+      <div
         v-if="showLoadingMore"
         slot="loadMore"
         :style="{
@@ -19,26 +19,32 @@
       >
         <a-spin v-if="loadingMore" />
         <a-button v-else @click="onLoadMore"> loading more </a-button>
-      </div> -->
+      </div>
       <a-list-item slot="renderItem" slot-scope="item">
         <a slot="actions" @click="show(item)">查看</a>
-        <a-list-item-meta :description="item.body.slice(0, 300)">
+        <a-list-item-meta :description="item.content.slice(0, 300)">
           <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
           <a-avatar slot="avatar" icon="book" />
         </a-list-item-meta>
       </a-list-item>
     </a-list>
-    <article-detail v-else :article='currentArticle' @show="$data.detail = false; $data.currentArticle = {}" />
+    <article-detail
+      v-else
+      :article="currentArticle"
+      @show="
+        $data.detail = false;
+        $data.currentArticle = {};
+      "
+    />
   </div>
 </template>
 
 <script>
-
-import ArticleDetail from '../articleDetail.vue'
+import ArticleDetail from "../articleDetail.vue";
 export default {
   name: "ArticleList",
   components: {
-      ArticleDetail
+    ArticleDetail,
   },
   data() {
     return {
@@ -48,51 +54,52 @@ export default {
       data: [],
       detail: false,
       currentArticle: {},
-      pid: 1
+      pid: 1,
     };
   },
   mounted() {
     this.getData((res) => {
-      console.log('getdata=>',res)
+      // console.log("getdata=>", res);
       this.loading = false;
-      this.data = res.data
+      this.data = res;
     });
   },
   methods: {
-    show(article){
-        console.log(article)
-        this.currentArticle = article,
-        this.detail = true
+    show(article) {
+      console.log(article);
+      (this.currentArticle = article), (this.detail = true);
     },
-    getData(callback,next=false) {
-        if(next){
-            this.pid = this.pid+1
+    getData(callback, next = false) {
+      if (next) {
+        this.pid = this.pid + 1;
+      }
+      const { pid } = this;
+      this.$api.Article.get_list(pid).then((r) => {
+        if (r.data.length === 0) {
+          this.$message.info("没有更多咯");
         }
-       const  { pid }  = this 
-
-        this.$api.Article.get_list(pid).then((r) => {
-          console.log('====',r)
-            if(r.data.length === 0){
-                this.$message.info("没有更多咯")
-            }
-            callback(r);
-        });
+        callback(r.data.lists);
+      });
     },
     onLoadMore() {
-        this.loadingMore = true;
-        this.getData((res) => {
-          this.data = this.data.concat(res.data);
-          this.loadingMore = false;
+      this.loadingMore = true;
+      this.getData((res) => {
+        if (res.length === 0) {
+          this.$message.warning("没有更多咯");
+        } else {
+          this.data = this.data.concat(res);
           this.$nextTick(() => {
             window.dispatchEvent(new Event("resize"));
           });
-        }, true);
+        }
+        this.loadingMore = false;
+      }, true);
     },
   },
 };
 </script>
 <style scoped>
-#list{
+#list {
   margin: 30px auto;
   max-width: 985px;
 }
