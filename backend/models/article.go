@@ -3,7 +3,7 @@ package models
 type Article struct {
 	Model
 	TagID         int    `json:"tag_id" gorm:"index"`
-	Tag           Tag    `json:"tag"`
+	Tag           Tag    `json:"tag" gorm:"references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Title         string `json:"title" validate:"required"`
 	Desc          string `json:"desc" `
 	Content       string `json:"content" validate:"required"`

@@ -13,7 +13,7 @@ const article = {
         return $axios.get(prefix + '?page='+pid)
     },
     del(id){
-        return $axios.delete(prefix + id)
+        return $axios.delete(prefix + "/" + id)
     },
     get_index(){
         return $axios.get('index')

@@ -1,56 +1,79 @@
 <template>
-  <a-card title='文章管理'>
-      <a slot='extra' class="editable-add-btn" @click="$router.push('/Edit')">添加文章</a>
-    <a-table bordered :data-source="dataSource" :columns="columns" rowKey='id'>
+  <a-card
+    title="文章管理"
+    :style="{
+      height: '740px',
+    }"
+  >
+    <a slot="extra" class="editable-add-btn" @click="$router.push('/Edit')"
+      >添加文章</a
+    >
+    <a-table bordered :data-source="dataSource" :columns="columns" rowKey="id" 
+        :pagination="{
+          position:'bottom',
+          pageSize:10,
+          total:total,
+          onChange:pageChange
+        }"
+    >
       <template slot="operation" slot-scope="text, record">
         <a-popconfirm
           v-if="dataSource.length"
-          title="Sure to delete?"
+          title="确认删除吗?"
           @confirm="() => onDelete(record)"
         >
           <a href="javascript:;">删除</a>
         </a-popconfirm>
       </template>
+      <a-pagination size="small" :total="50" />
     </a-table>
   </a-card>
 </template>
 <script>
-import columns from './columns.js';
+import columns from "./columns.js";
 export default {
   data() {
     return {
       dataSource: [],
       count: 2,
       columns,
-      api: this.$api.Article
+      api: this.$api.Article,
+      total: 0,
     };
   },
-  mounted(){
-    this.get()
+  mounted() {
+    this.get();
   },
   methods: {
-    get(){
-      this.api.get_list().then(r=>{
-        this.dataSource = r.data.map(item=>{
-          item.body = item.body.substring(0,10)
-          return item
-        })
-        console.log('获取文章的结果',this.dataSource)
-      })
+    get(pid=0) {
+      this.api.get_list(pid).then((r) => {
+        console.log(r);
+        let { lists, total } = r.data;
+        this.total = total;
+        this.dataSource = lists.map((item) => {
+          item.body = item.content.substring(0, 10);
+          if (!item.created_by) {
+            item.created_by = "默认";
+          }
+          return item;
+        });
+        // console.log('获取文章的结果',this.dataSource)
+      });
     },
-
+    pageChange(e) {
+      this.get(e)
+    },
     async onDelete(key) {
-      const res = await this.$api.Article.del(key.id)
-      console.log(res)
-      if(res.status === 200){
-        this.get()
-        await this.$message.success('删除成功')
-      }
-      else{
-        this.$message.error('删除失败')
+      const res = await this.$api.Article.del(key.id);
+      console.log(res);
+      const { code, msg } = res;
+      if (code === 200) {
+        this.get();
+        await this.$message.success("删除成功");
+      } else {
+        this.$message.error(msg);
       }
     },
-
   },
 };
 </script>

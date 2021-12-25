@@ -50,10 +50,12 @@ func GetAuth(c *gin.Context) {
 		isExist := models.CheckAuth(u, p)
 		if isExist {
 			token, err := util.GenerateToken(u, p)
+			user := models.CheckAdmin(u, p)
 			if err != nil {
 				code = e.ERROR_AUTH_TOKEN
 			} else {
 				data["token"] = token
+				data["user"] = user
 				code = e.SUCCESS
 			}
 		} else {

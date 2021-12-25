@@ -2,89 +2,80 @@
   <div>
     <div>
       <div id="title">
-      <a-popconfirm
-        title="确定不保存就返回吗?"
-        ok-text="Yes"
-        cancel-text="No"
-        @confirm="$router.go(-1);"
-      >
-        <a-button><a-icon type="left" />Go back </a-button>
-      </a-popconfirm>
-      <a-input placeholder="请输入标题" v-model='title' />
-      <a-button @click='showExt'><a-icon type="check" /> 发布 </a-button>
+        <a-popconfirm
+          title="确定不保存就返回吗?"
+          ok-text="Yes"
+          cancel-text="No"
+          @confirm="$router.go(-1)"
+        >
+          <a-button><a-icon type="left" />返回</a-button>
+        </a-popconfirm>
+        <a-input placeholder="请输入标题" v-model="title" />
+        <a-input-search
+          placeholder="请输入标签id"
+          @search="save"
+        >
+          <a-button slot="enterButton"> 发布 </a-button>
+        </a-input-search>
       </div>
-    <br />
-    <mavon-editor
-      id="edit"
-      ref="edit"
-      v-model="value"
-      @save="save"
-      @imgAdd="imgAdd"
-      @imgDel="imgDel"
-    />
-    <!-- <a-button @click='uploadimg'>保存图片</a-button> -->
-    </div>
-    <div class="select">
-      <a-drawer
-      placement="right"
-      :closable="false"
-      :visible="select"
-      @close="$data.select = false"
-    >
-      <get-ext @comfirm="save" />
-    </a-drawer>
+      <br />
+      <mavon-editor
+        id="edit"
+        ref="edit"
+        v-model="value"
+        @save="save"
+        @imgAdd="imgAdd"
+        @imgDel="imgDel"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import getExt from '@/edit/getExt';
+
 export default {
   name: "Edit",
-  components:{
-    getExt
-  },
   data() {
     return {
       value: null,
       img_file: null,
       title: null,
-      select: false
+      select: false,
     };
   },
   methods: {
-    // 展示选择标签页
-    showExt(){
-      this.select = true
-    },
     // 保存文章
-    async save(params) {
-      console.log(this.title, params)
-      if( this.title == null || this.title == ""){
-        return this.$message.warning("标题不能为空哦")
+    async save(tid=0) {
+      console.log(this.title, tid);
+      if(tid<1)  {
+        this.$message.info("文章的标签id不饿能小于1哦")
+        return
+      }
+      if (this.title == null || this.title == "") {
+        return this.$message.warning("标题不能为空哦");
       }
       if (this.img_file != null) {
         this.$message.info("正在上传图片");
         // await this.uploadimg();
       }
-      const { title, value: body } = this
+      const { title, value: body } = this;
       try {
-        const res = await this.$api.Article.save({ 
+        const res = await this.$api.Article.save({
           title,
-          body,
-          tags: params.tags
-        })
-        console.log("保存文章的结果", res)
-        if(res.status === 201){
-          this.$message.success("发布成功")
-          this.$router.push('/article')
-        }else{
-          this.$message.warning("发布失败")
+          content:body,
+          tag_id: Number(tid),
+        });
+        console.log("保存文章的结果", res);
+        const { code, msg } = res;
+        if (code === 200) {
+          this.$message.success("发布成功");
+          this.$router.push("/article");
+        } else {
+          this.$message.warning(msg);
         }
       } catch (error) {
-        this.$message.warning('发生错误')
+        this.$message.warning("发生错误");
       }
-
     },
     imgAdd(pos, $file) {
       console.log("添加图片", pos, $file);
@@ -124,14 +115,13 @@ export default {
         this.$message.error("上传失败");
       }
     },
-
   },
 };
 </script>
 
 <style lang='less' scoped>
 #title {
-  margin-top:10px;
+  margin-top: 10px;
   display: flex;
 }
 #edit {

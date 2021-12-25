@@ -6,22 +6,22 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    isLogin:false,
-    token:null,
+    isLogin: false,
+    token: null,
     uid: null,
     username: null,
-    level:''
+    level: ''
   },
   plugins: [createPersistedState()],
   mutations: {
-    login( state, data){
+    login(state, data) {
       state.isLogin = true
-      const { id: uid, username , token, level } = data
+      const { user: { id: uid, username, level }, token } = data
       state.token = token
       state.uid = uid
       state.username = username
-      this.level = level
-      console.log("登录", state)
+      state.level = level
+      // console.log("登录", state)
     },
     logout(state) {
       state.isLogin = false
@@ -33,10 +33,10 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    login(context, data){
-      context.commit('login',data)
+    login(context, data) {
+      context.commit('login', data)
     },
-    logout({commit}){
+    logout({ commit }) {
       commit('logout')
     }
   }

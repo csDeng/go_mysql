@@ -1,85 +1,109 @@
 <template>
   <div>
     <div id="app">
-          <div id="main1">
-      <a-card title="登录">
-        <a-form
-          id="login"
-          :form="form"
-          class="login-form"
-          @submit="handleSubmit"
-        >
-          <a-form-item label="用户名" labelAlign="left" required hasFeedback>
-            <a-input
-              v-decorator="[
-                'userName',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input your username!',
-                    },
-                  ],
-                },
-              ]"
-              placeholder="Username"
-            >
-              <a-icon
-                slot="prefix"
-                type="user"
-                style="color: rgba(0, 0, 0, 0.25)"
-              />
-            </a-input>
-          </a-form-item>
-          <a-form-item label="密码" labelAlign="left" required hasFeedback>
-            <a-input
-              v-decorator="[
-                'password',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input your Password!',
-                    },
-                  ],
-                },
-              ]"
-              type="password"
-              placeholder="Password"
-            >
-              <a-icon
-                slot="prefix"
-                type="lock"
-                style="color: rgba(0, 0, 0, 0.25)"
-              />
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-checkbox
-              v-decorator="[
-                'remember',
-                {
-                  valuePropName: 'checked',
-                  initialValue: true,
-                },
-              ]"
-            >
-              Remember me
-            </a-checkbox>
-            <br />
-            <a-button type="primary" html-type="submit"> 登录 </a-button>
-            Or
-            <a href="javascript:;" @click="$router.push('/Register')"> 注册 </a>
-          </a-form-item>
-        </a-form>
-      </a-card>
+      <div id="main1">
+        <a-card >
+          <a-form
+            id="login"
+            :form="form"
+            class="login-form"
+            @submit="handleSubmit"
+          >
+            <a-form-item label="用户名" labelAlign="left" required hasFeedback>
+              <a-input
+                v-decorator="[
+                  'userName',
+                  {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please input your username!',
+                      },
+                    ],
+                  },
+                ]"
+                placeholder="Username"
+              >
+                <a-icon
+                  slot="prefix"
+                  type="user"
+                  style="color: rgba(0, 0, 0, 0.25)"
+                />
+              </a-input>
+            </a-form-item>
+            <a-form-item label="密码" labelAlign="left" required hasFeedback>
+              <a-input
+                v-decorator="[
+                  'password',
+                  {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please input your Password!',
+                      },
+                    ],
+                  },
+                ]"
+                type="password"
+                placeholder="Password"
+              >
+                <a-icon
+                  slot="prefix"
+                  type="lock"
+                  style="color: rgba(0, 0, 0, 0.25)"
+                />
+              </a-input>
+            </a-form-item>
+            <a-form-item>
+              <a-checkbox
+                v-decorator="[
+                  'remember',
+                  {
+                    valuePropName: 'checked',
+                    initialValue: true,
+                  },
+                ]"
+              >
+                Remember me
+              </a-checkbox>
+              <br />
+              <a-button type="primary" html-type="submit"> 登录 </a-button>
+              Or
+              <a href="javascript:;" @click="$router.push('/Register')">
+                注册
+              </a>
+            </a-form-item>
+          </a-form>
+        </a-card>
+      </div>
     </div>
-    </div>
+     <vue-particles
+     id="particles-js"
+          color="#409EFF"
+          :particleOpacity="0.7"
+          :particlesNumber="60"
+          shapeType="circle"
+          :particleSize="6"
+          linesColor="#409EFF"
+          :linesWidth="1"
+          :lineLinked="true"
+          :lineOpacity="0.4"
+          :linesDistance="150"
+          :moveSpeed="5"
+          :hoverEffect="true"
+          hoverMode="grab"
+          :clickEffect="true"
+          clickMode="push">
+</vue-particles>
 
   </div>
 </template>
 
 <script>
+import VueParticles from 'vue-particles'  
+import Vue from 'vue'
+Vue.use(VueParticles)
+
 export default {
   name: "Login",
   beforeCreate() {
@@ -96,9 +120,8 @@ export default {
               username,
               password,
             });
-            console.log("login res=>", res);
-            const { code:status, data } = res;
-            console.log("登录结果res", res);
+            const { code: status, data } = res;
+            // console.log("登录结果res", res);
             if (status === 200) {
               this.$message.success("登录成功").then(() => {
                 this.$store.dispatch("login", data).then(() => {
@@ -118,18 +141,19 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-#app {
-  margin-left:-93px;
-  width:100vw;
-  height:100vh;
-  position: fixed;
-  background: url('https://scpic.chinaz.net/Files/pic/pic9/201309/apic1045.jpg') no-repeat;
-  background-size: 100% 100%;
-}
-#main1 {
-margin:150px auto;
-border-radius: 8px;
-width:600px;
 
+#main1 {
+  position:fixed;
+  top:150px;
+  left:50%;
+  margin-left:-300px;
+  // margin: 150px auto;
+  border-radius: 8px;
+  width: 600px;
+  z-index:999;
+}
+#particles-js {
+  height: calc(100% - 100px);
+  position: absolute;
 }
 </style>

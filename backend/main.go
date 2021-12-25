@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/csDeng/blog/models"
-	"github.com/csDeng/blog/pkg/gredis"
 	"github.com/csDeng/blog/pkg/logging"
 	"github.com/csDeng/blog/pkg/setting"
 	"github.com/csDeng/blog/routers"
@@ -17,7 +16,7 @@ func main() {
 	logging.Setup()
 
 	// 启用redis
-	gredis.Setup()
+	// gredis.Setup()
 	router := routers.InitRouter()
 
 	s := &http.Server{

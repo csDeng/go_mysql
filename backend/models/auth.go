@@ -1,17 +1,24 @@
 package models
 
+import "fmt"
+
 type Auth struct {
 	// 转码成gorm的时候，ID改成primary_key, 转码成json的时候,叫id
 	Model
-	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required"`
-	Level    string `json:"level" gorm:"default:0;comment:0是普通用户,1是管理员;size:5"`
+	Username string `json:"username" validate:"required" gorm:"not null;type:string;size:100"`
+	Password string `json:"password" validate:"required" gorm:"not null;type:string;size:256"`
+	Level    string `json:"level" gorm:"default:0;comment:0是普通用户,1是管理员;type:string;size:1"`
 }
 
 func CheckAuth(username, password string) bool {
 	var auth Auth
 	db.Select("id").Where(Auth{Username: username, Password: password}).First(&auth)
 	return auth.ID > 0
+}
+
+func CheckAdmin(username, password string) (user Auth) {
+	db.Where("username = ? AND password = ?", username, password).First(&user)
+	return
 }
 
 func UsernameIsExisted(username string) bool {
@@ -39,6 +46,7 @@ func GetUserById(id int) (user Auth) {
 	db.Where("id = ?", id).First(&user)
 	return
 }
+
 func GetUsers(pageNum int,
 	pageSize int,
 	maps interface{}) (users []Auth) {
@@ -52,6 +60,7 @@ func GetUserTotal(maps interface{}) (count int) {
 }
 
 func EditUser(id int, data interface{}) bool {
+	fmt.Println("model edit=>", data)
 	db.Model(&Auth{}).Where("id = ?", id).Updates(data)
 	return true
 }

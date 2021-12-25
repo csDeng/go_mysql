@@ -26,7 +26,7 @@
           <a-menu-item key="user" @click="goto('/Mine')">
             <a-icon type="user" /> 关于我 
            </a-menu-item> -->
-          <a-menu-item key="edit" v-if="$store.state.level == '管理员'" @click="GoToWrite">
+          <a-menu-item key="edit" v-if="$store.state.level == '1'" @click="GoToWrite">
             <a-icon type="edit" /> 后台管理
           </a-menu-item>
         </a-menu>
@@ -81,10 +81,7 @@ export default {
     GoToWrite(){
       this.$message.info('正在前往后台管理')
       setTimeout(()=>{
-        const a = document.createElement('a')
-        a.href='/admin/'
-        a.target = '_blank'
-        a.click()
+        window.location = "/admin/index"
       },1000)
     }
   },
@@ -103,7 +100,7 @@ export default {
   position: -webkit-sticky;
   position: sticky;
   top: 0px;
-  // z-index:9999;
+  z-index:1000;
   // background:#EEF0F5;
 }
 #logo {

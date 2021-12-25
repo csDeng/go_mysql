@@ -23,6 +23,7 @@
     "style-resources-loader": "^1.4.1",
     "vue": "^2.6.11",
     "vue-markdown": "^2.2.4",
+    "vue-particles": "^1.0.9",
     "vue-router": "^3.5.2",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.0.0"

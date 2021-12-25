@@ -41,7 +41,7 @@ export default {
             await this.$store.dispatch('logout')
       },
       login() {
-          this.$router.push('/login')
+          window.location = "/login"
       }
   },
 };

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <a-card :bordered="false" title="服务器信息">
+    <a-card :bordered="false" :style="{
+      height:'740px'
+    }" title="服务器信息">
       <a-row>
         <a-col id='progress' :span="10">
             <h3>开发进度条</h3>

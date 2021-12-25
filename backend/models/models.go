@@ -45,12 +45,6 @@ func Setup() {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
-	auth := &Auth{}
-	article := &Article{}
-	tag := &Tag{}
-
-	// 自动迁移表结构
-	db.AutoMigrate(auth, article, tag)
 }
 
 func CloseDB() {

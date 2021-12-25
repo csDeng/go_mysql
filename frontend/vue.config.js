@@ -1,10 +1,11 @@
 const path = require('path')
-
+const webpack = require("webpack")
 function resolve(dir) { 
   return path.join(__dirname, dir)
 }
 module.exports = {  
-    publicPath:'/',
+  // 去除打包时生产.map文件，加快打包速度
+    productionSourceMap: false,
     lintOnSave:true,
     devServer: {
         open:true
@@ -16,6 +17,22 @@ module.exports = {
             .set('~', resolve('src'))
             
     },
+    configureWebpack: config => {
+      config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
+      if (process.env.NODE_ENV === 'production') {
+          config.performance = {
+              hints: 'warning',
+              // 入口起点的最大体积
+              maxEntrypointSize: 50000000,
+              // 生成文件的最大体积
+              maxAssetSize: 30000000,
+              // 只给出 js 文件的性能提示
+              assetFilter: function (assetFilename) {
+                  return assetFilename.endsWith('.js')
+              }
+          }
+      }
+  },
     // eslint-disable-next-line no-dupe-keys
     devServer: {
       proxy:{
@@ -40,7 +57,7 @@ module.exports = {
         filename: 'index.html',
         // 当使用 title 选项时，
         // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-        title: 'tree hole',
+        title: '记事本',
         // 在这个页面中包含的块，默认情况下会包含
         // 提取出来的通用 chunk 和 vendor chunk。
         chunks: ['chunk-vendors', 'chunk-common', 'index']
@@ -49,7 +66,7 @@ module.exports = {
         entry: 'src/pages/admin/main.js',
         template: 'public/index.html',
         filename: 'admin.html',
-        title: '博客管理后台',
+        title: '记事本管理后台',
         chunks: ['chunk-vendors', 'chunk-common', 'admin']
       },
     }

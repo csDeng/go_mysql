@@ -9,8 +9,8 @@ const user = {
     register(params){
         return $axios.post('/register',params)
     },
-    get_list(){
-        return $axios.get(`${users}`)
+    get_list(pid=0){
+        return $axios.get(`${users}?page=${pid}`)
     },
     update(params){
         console.log(params)

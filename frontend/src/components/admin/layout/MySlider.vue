@@ -27,9 +27,13 @@
           <a-icon type="book" />
           <span>文章管理</span>
         </a-menu-item>
-        <a-menu-item key="4" @click="goto('/category')">
+        <a-menu-item key="4" @click="goto('/tag')">
           <a-icon type="database" />
           <span>标签管理</span>
+        </a-menu-item>
+        <a-menu-item key="5" @click="goto('/about')">
+          <a-icon type="usergroup-delete" />
+          <span>团队信息</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>

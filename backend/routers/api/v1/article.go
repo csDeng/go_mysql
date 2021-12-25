@@ -186,6 +186,7 @@ func DeleteArticle(c *gin.Context) {
 		if models.ExistArticleByID(id) {
 			models.DeleteArticle(id)
 			code = e.SUCCESS
+
 		} else {
 			code = e.ERROR_NOT_EXIST_ARTICLE
 		}

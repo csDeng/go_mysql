@@ -16,6 +16,10 @@ export default [
       key: 'level',
     },
     {
+      title:"软删除",
+      dataIndex:"deleted_on"
+    },
+    {
       title: '操作',
       dataIndex: 'operation',
       scopedSlots: { customRender: 'operation' },

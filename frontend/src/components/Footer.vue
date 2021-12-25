@@ -1,6 +1,6 @@
 <template>
   <div id="footer">
-    <a-button @click="backTop">回到顶部</a-button>
+    <!-- <a-button @click="backTop">回到顶部</a-button> -->
     <p>
       <a-icon type="copyright" />
       2021-2050 vue & go  <br />

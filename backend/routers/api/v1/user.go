@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/csDeng/blog/models"
@@ -42,6 +43,7 @@ func EditUser(c *gin.Context) {
 	if models.UserIsExistedBYId(id) {
 		code = e.SUCCESS
 		models.EditUser(id, json)
+		fmt.Println("edit json=>", json.Level)
 		data["user"] = models.GetUserById(id)
 	} else {
 		code = e.ERROR_AUTH_USERISEISTEDBYID

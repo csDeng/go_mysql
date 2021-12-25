@@ -16,8 +16,8 @@ const router = new vueRouter({
                     component: () => import('~/views/admin/index.vue')
                 },
                 {
-                    path: 'category',
-                    component: () => import('~/views/admin/category/CategoryAdmin.vue')
+                    path: 'tag',
+                    component: () => import('~/views/admin/tags/TagsAdmin.vue')
                 },
                 {
                     path: 'article',
@@ -30,12 +30,12 @@ const router = new vueRouter({
                 {
                     path: 'user',
                     component: () => import('~/views/admin/usersAdmin.vue')
+                },
+                {
+                    path:'about',
+                    component: ()=> import('~/views/admin/about.vue')
                 }
             ]
-        },
-        {
-            path: '/login',
-            component: () => import('~/views/admin/Login.vue')
         },
         {
             path:'/403',
