@@ -2,8 +2,6 @@ package models
 
 type Article struct {
 	Model
-	TagID         int    `json:"tag_id" gorm:"index"`
-	Tag           Tag    `json:"tag" gorm:"references:id;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Title         string `json:"title" validate:"required"`
 	Desc          string `json:"desc" `
 	Content       string `json:"content" validate:"required"`
@@ -36,7 +34,6 @@ func GetArticleIndex() (articles []Article) {
 
 func GetArticle(id int) (article Article) {
 	db.Where("id = ?", id).First(&article)
-	db.Model(&article).Related(&article.Tag)
 	return
 }
 func EditArticle(id int, data interface{}) bool {
@@ -45,7 +42,6 @@ func EditArticle(id int, data interface{}) bool {
 }
 func AddArticle(data map[string]interface{}) bool {
 	db.Create(&Article{
-		TagID:         data["tag_id"].(int),
 		Title:         data["title"].(string),
 		Desc:          data["desc"].(string),
 		Content:       data["content"].(string),

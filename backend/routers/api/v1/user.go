@@ -36,7 +36,7 @@ func EditUser(c *gin.Context) {
 		appG.Response(http.StatusOK, code, data)
 	}
 
-	json := &models.Auth{}
+	json := &models.User{}
 
 	c.BindJSON(json)
 
@@ -46,7 +46,7 @@ func EditUser(c *gin.Context) {
 		fmt.Println("edit json=>", json.Level)
 		data["user"] = models.GetUserById(id)
 	} else {
-		code = e.ERROR_AUTH_USERISEISTEDBYID
+		code = e.ERROR_USER_USERISEISTEDBYID
 	}
 
 	appG.Response(http.StatusOK, code, data)
@@ -67,7 +67,7 @@ func DeleteUser(c *gin.Context) {
 				code = e.ERROR
 			}
 		} else {
-			code = e.ERROR_AUTH_USERISEISTEDBYID
+			code = e.ERROR_USER_USERISEISTEDBYID
 		}
 
 	}

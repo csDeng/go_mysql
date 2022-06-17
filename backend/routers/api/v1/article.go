@@ -17,13 +17,12 @@ import (
 
 // 这里的文章类型，用于接收绑定的json数据，与models的不一样哦
 type Article struct {
-	TagID         int    `json:"tag_id" validate:"min=1" `
 	Title         string `json:"title" validate:"required,max=100"`
 	Desc          string `json:"desc" validate:"max=255"`
 	Content       string `json:"content" validate:"required"`
 	CreatedBy     string `json:"created_by"`
 	ModifiedBy    string `json:"modified_by"`
-	State         int    `json:"state" validate:"min=0,max=1"`
+	State         int    `json:"state" validate:"min=0,max=1" gorm:"comment:'状态 0为禁用,1为启用'"`
 	CoverImageUrl string `json:"cover_image_url"`
 }
 
@@ -113,7 +112,6 @@ func AddArticle(c *gin.Context) {
 	if err != nil {
 		data["error"] = fmt.Sprint(err)
 	} else {
-		data["tag_id"] = json.TagID
 		data["title"] = json.Title
 		data["desc"] = json.Desc
 		data["content"] = json.Content
@@ -147,25 +145,21 @@ func EditArticle(c *gin.Context) {
 	err := validate.Struct(json)
 	if err == nil {
 		if models.ExistArticleByID(id) {
-			if models.ExistTagByID(json.TagID) {
-				data["tag_id"] = json.TagID
-				if json.Title != "" {
-					data["title"] = json.Title
-				}
-				if json.Desc != "" {
-					data["desc"] = json.Desc
-				}
-				if json.Content != "" {
-					data["content"] = json.Content
-				}
-				if json.CoverImageUrl != "" {
-					data["cover_image_url"] = json.CoverImageUrl
-				}
-				models.EditArticle(id, data)
-				code = e.SUCCESS
-			} else {
-				code = e.ERROR_NOT_EXIST_TAG
+
+			if json.Title != "" {
+				data["title"] = json.Title
 			}
+			if json.Desc != "" {
+				data["desc"] = json.Desc
+			}
+			if json.Content != "" {
+				data["content"] = json.Content
+			}
+			if json.CoverImageUrl != "" {
+				data["cover_image_url"] = json.CoverImageUrl
+			}
+			models.EditArticle(id, data)
+			code = e.SUCCESS
 		} else {
 			code = e.ERROR_NOT_EXIST_ARTICLE
 		}
