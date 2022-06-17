@@ -14,16 +14,16 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID         int `gorm:"primary_key;autoIncrement" json:"id"`
-	CreatedOn  int `json:"created_on"`
-	ModifiedOn int `json:"modified_on"`
-	DeletedOn  int `json:"deleted_on"`
+	ID         uint `gorm:"primary_key;autoIncrement" json:"id"`
+	CreatedOn  uint `json:"created_on"`
+	ModifiedOn uint `json:"modified_on"`
+	DeletedOn  uint `json:"deleted_on"`
 }
 
 func Setup() {
 
 	var err error
-	dbConfig := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	dbConfig := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
 		setting.DatabaseSetting.Password,
 		setting.DatabaseSetting.Host,
@@ -31,26 +31,38 @@ func Setup() {
 	db, err = gorm.Open(setting.DatabaseSetting.Type, dbConfig)
 
 	if err != nil {
-		log.Println("链接数据库错误=> \r\n", err)
+		log.Fatalln("链接数据库错误=> \r\n", err)
 	}
 
+	// 表名自定义
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName
 	}
+
+	// 替换钩子函数
 	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
 	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
 	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 
+	// 禁止表名自动加s
 	db.SingularTable(true)
+
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
-	// auth := &Auth{}
-	// article := &Article{}
-	// tag := &Tag{}
 
-	// // 自动迁移表结构
-	// db.AutoMigrate(auth, tag, article)
+	/* 数据库迁移 */
+	db.AutoMigrate(
+		&User{},
+		&Tag{},
+		&Article{},
+		&UserArticleRelation{},
+	)
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		&User{},
+		&Tag{},
+		&Article{},
+	)
 }
 
 func CloseDB() {

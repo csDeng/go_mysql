@@ -23,8 +23,8 @@ func InitRouter() *gin.Engine {
 	// 开放静态资源
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 
-	r.POST("/login", api.GetAuth)
-	r.POST("/register", api.AddAuth)
+	r.POST("/login", api.GetUser)
+	r.POST("/register", api.AddUser)
 	r.GET("refresh/:token", api.Refresh)
 
 	r.POST("/upload", api.UploadImage)

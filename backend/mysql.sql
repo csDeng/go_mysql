@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS `blog`;
 -- 创建数据库
-CREATE DATABASE blog default character set utf8
-default collate utf8_general_ci;
+CREATE DATABASE blog default character set utf8mb4
+default collate utf8mb4_unicode_ci;
 
 USE blog;
 
@@ -152,7 +152,7 @@ CREATE TABLE `blog_article_browser` (
     FOREIGN KEY(`aid`) REFERENCES `blog_article`(`id`),
     FOREIGN KEY(`browser_id`) REFERENCES `blog_browser`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章浏览关系表';
- 
+
 -- 用户评论关系表
 CREATE TABLE `blog_user_comment` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -162,7 +162,7 @@ CREATE TABLE `blog_user_comment` (
     FOREIGN KEY(`uid`) REFERENCES `blog_user`(`id`),
     FOREIGN KEY(`cid`) REFERENCES `blog_comment`(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户评论关系表';
- 
+
 
 
 INSERT INTO `blog`.`blog_user` (`id`, `username`, `password`) VALUES (null, 'test', 'test123456');
