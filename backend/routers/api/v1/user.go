@@ -20,6 +20,7 @@ func Getusers(c *gin.Context) {
 
 	data := make(map[string]interface{})
 	maps := make(map[string]interface{})
+
 	data["lists"] = models.GetUsers(util.GetPage(c), setting.AppSetting.PageSize, maps)
 	data["total"] = models.GetUserTotal(maps)
 

@@ -1,13 +1,16 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
-	// 转码成gorm的时候，ID改成primary_key, 转码成json的时候,叫id
-	Model
-	Username string `json:"username" validate:"required" gorm:"type:char;size:100;not null;"`
-	Password string `json:"password" validate:"required" gorm:"type:char;size:256;not null;"`
-	Level    string `json:"level" gorm:"type:char;size:1;default:'0';comment:'0是普通用户,1是管理员';"`
+	gorm.Model
+	Username string `json:"username" validate:"required" gorm:"type:varchar(100);not null;"`
+	Password string `json:"password" validate:"required" gorm:"type:varchar(255);not null;"`
+	Level    string `json:"level" gorm:"type:char(1);default:'0';comment:'0是普通用户,1是管理员';"`
 }
 
 func CheckUser(username, password string) bool {
@@ -54,7 +57,7 @@ func GetUsers(pageNum int,
 	return
 }
 
-func GetUserTotal(maps interface{}) (count int) {
+func GetUserTotal(maps interface{}) (count int64) {
 	db.Model(&User{}).Where(maps).Count(&count)
 	return
 }

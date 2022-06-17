@@ -39,6 +39,7 @@ func InitRouter() *gin.Engine {
 	apiv1.GET("/articles/:id", v1.GetArticle)
 	// 获取用户列表
 	apiv1.GET("/users", v1.Getusers)
+
 	apiv1.Use(jwt.JWT())
 	{
 

@@ -1,10 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Tag struct {
-	Model
-	// State     int    `json:"state" validate:"required,min=0,max=1"`
-	// tag不能有空格
-	// 0不符合required
+	gorm.Model
 	Name       string `json:"name" validate:"required"`
 	CreatedBy  string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
@@ -17,7 +16,7 @@ func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
 	return
 }
 
-func GetTagTotal(maps interface{}) (count int) {
+func GetTagTotal(maps interface{}) (count int64) {
 	db.Model(&Tag{}).Where(maps).Count(&count)
 
 	return
@@ -41,10 +40,7 @@ func AddTag(name string, state int, createdBy string) bool {
 func ExistTagByID(id int) bool {
 	var tag Tag
 	db.Select("id").Where("id = ?", id).First(&tag)
-	if tag.ID > 0 {
-		return true
-	}
-	return false
+	return tag.ID > 0
 }
 
 func DeleteTag(id int) bool {

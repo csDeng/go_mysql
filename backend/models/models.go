@@ -3,127 +3,47 @@ package models
 import (
 	"fmt"
 	"log"
-	"time"
-
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 
 	"github.com/csDeng/blog/pkg/setting"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-type Model struct {
-	ID         uint `gorm:"primary_key;autoIncrement" json:"id"`
-	CreatedOn  uint `json:"created_on"`
-	ModifiedOn uint `json:"modified_on"`
-	DeletedOn  uint `json:"deleted_on"`
-}
-
 func Setup() {
 
 	var err error
+
 	dbConfig := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
 		setting.DatabaseSetting.Password,
 		setting.DatabaseSetting.Host,
 		setting.DatabaseSetting.Name)
-	db, err = gorm.Open(setting.DatabaseSetting.Type, dbConfig)
+
+	db, err = gorm.Open(mysql.New(mysql.Config{
+		DSN:               dbConfig,
+		DefaultStringSize: 256, //string 类型字段的默认长度
+	}), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalln("链接数据库错误=> \r\n", err)
 	}
-
-	// 表名自定义
-	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return setting.DatabaseSetting.TablePrefix + defaultTableName
-	}
-
-	// 替换钩子函数
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
-
-	// 禁止表名自动加s
-	db.SingularTable(true)
-
-	db.LogMode(true)
-	db.DB().SetMaxIdleConns(10)
-	db.DB().SetMaxOpenConns(100)
-
+	log.Println("=============")
+	log.Println(db)
 	/* 数据库迁移 */
 	db.AutoMigrate(
 		&User{},
 		&Tag{},
 		&Article{},
 		&UserArticleRelation{},
+		&ArticleTagRelation{},
 	)
 	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 		&User{},
 		&Tag{},
 		&Article{},
+		&UserArticleRelation{},
+		&ArticleTagRelation{},
 	)
-}
-
-func CloseDB() {
-	defer db.Close()
-}
-
-// updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
-func updateTimeStampForCreateCallback(scope *gorm.Scope) {
-	if !scope.HasError() {
-		nowTime := time.Now().Unix()
-		// scope.FieldByName 通过 scope.Fields() 获取所有字段，判断当前是否包含所需字段
-		if createTimeField, ok := scope.FieldByName("CreatedOn"); ok {
-			if createTimeField.IsBlank {
-				createTimeField.Set(nowTime)
-			}
-		}
-		if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok {
-			if modifyTimeField.IsBlank {
-				modifyTimeField.Set(nowTime)
-			}
-		}
-	}
-}
-
-// updateTimeStampForUpdateCallback will set `ModifyTime` when updating
-func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
-	if _, ok := scope.Get("gorm:update_column"); !ok {
-		scope.SetColumn("ModifiedOn", time.Now().Unix())
-	}
-}
-
-// 软删除
-func deleteCallback(scope *gorm.Scope) {
-	if !scope.HasError() {
-		var extraOption string
-		if str, ok := scope.Get("gorm:delete_option"); ok {
-			extraOption = fmt.Sprint(str)
-		}
-		deletedOnField, hasDeletedOnField := scope.FieldByName("DeletedOn")
-		if !scope.Search.Unscoped && hasDeletedOnField {
-			scope.Raw(fmt.Sprintf(
-				"UPDATE %v SET %v=%v%v%v",
-				scope.QuotedTableName(),
-				scope.Quote(deletedOnField.DBName),
-				scope.AddToVars(time.Now().Unix()),
-				addExtraSpaceIfExist(scope.CombinedConditionSql()),
-				addExtraSpaceIfExist(extraOption),
-			)).Exec()
-		} else {
-			scope.Raw(fmt.Sprintf(
-				"DELETE FROM %v%v%v",
-				scope.QuotedTableName(),
-				addExtraSpaceIfExist(scope.CombinedConditionSql()),
-				addExtraSpaceIfExist(extraOption),
-			)).Exec()
-		}
-	}
-}
-func addExtraSpaceIfExist(str string) string {
-	if str != "" {
-		return " " + str
-	}
-	return ""
 }

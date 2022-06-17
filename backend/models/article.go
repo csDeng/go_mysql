@@ -1,7 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Article struct {
-	Model
+	gorm.Model
 	Title         string `json:"title" validate:"required"`
 	Desc          string `json:"desc" `
 	Content       string `json:"content" validate:"required"`
@@ -17,7 +19,7 @@ func ExistArticleByID(id int) bool {
 	return article.ID > 0
 
 }
-func GetArticleTotal(maps interface{}) (count int) {
+func GetArticleTotal(maps interface{}) (count int64) {
 	db.Model(&Article{}).Where(maps).Count(&count)
 	return
 }
