@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 
+	"github.com/csDeng/blog/pkg/e"
 	"gorm.io/gorm"
 )
 
@@ -13,15 +14,22 @@ type User struct {
 	Level    string `json:"level" gorm:"type:char(1);default:'0';comment:'0是普通用户,1是管理员';"`
 }
 
-func CheckUser(username, password string) bool {
-	var user User
-	db.Select("id").Where(User{Username: username, Password: password}).First(&user)
-	return user.ID > 0
+type UserInfo struct {
+	UserName string
+	Password string
+	Level    string
 }
 
-func CheckAdmin(username, password string) (user User) {
+func CheckUser(username, password string) *User {
+	var user User
+	db.Where(User{Username: username, Password: password}).First(&user)
+	return &user
+}
+
+func CheckAdmin(username, password string) bool {
+	user := User{}
 	db.Where("username = ? AND password = ?", username, password).First(&user)
-	return
+	return user.Level == e.ADMIN
 }
 
 func UsernameIsExisted(username string) bool {

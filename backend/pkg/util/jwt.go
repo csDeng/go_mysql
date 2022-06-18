@@ -3,6 +3,7 @@ package util
 import (
 	"time"
 
+	"github.com/csDeng/blog/models"
 	"github.com/csDeng/blog/pkg/setting"
 	jwt "github.com/dgrijalva/jwt-go"
 )
@@ -10,18 +11,16 @@ import (
 var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	*models.User
 	jwt.StandardClaims
 }
 
 // 生成token
-func GenerateToken(username, password string) (string, error) {
+func GenerateToken(user *models.User) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 	claims := Claims{
-		username,
-		password,
+		user,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gin-blog",

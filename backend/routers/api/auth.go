@@ -23,8 +23,6 @@ func Refresh(c *gin.Context) {
 	fmt.Println(maps, err)
 	if err != nil {
 		code = e.ERROR
-	} else {
-		fmt.Println("token=>", maps)
 	}
 	appG.Response(http.StatusOK, code, data)
 
@@ -35,8 +33,8 @@ func GetUser(c *gin.Context) {
 	appG := app.Gin{c}
 
 	json := &models.User{}
-	c.BindJSON(json)
 
+	c.BindJSON(json)
 	code := e.INVALID_PARAMS
 	data := make(map[string]interface{})
 
@@ -45,17 +43,14 @@ func GetUser(c *gin.Context) {
 	err := validate.Struct(json)
 
 	if err == nil {
-		u := json.Username
-		p := json.Password
-		isExist := models.CheckUser(u, p)
-		if isExist {
-			token, err := util.GenerateToken(u, p)
-			user := models.CheckAdmin(u, p)
+		u, p := json.Username, json.Password
+		user := models.CheckUser(u, p)
+		if user != nil {
+			token, err := util.GenerateToken(user)
 			if err != nil {
 				code = e.ERROR_USER_TOKEN
 			} else {
 				data["token"] = token
-				data["user"] = user
 				code = e.SUCCESS
 			}
 		} else {

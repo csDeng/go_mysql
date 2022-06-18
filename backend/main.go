@@ -11,8 +11,14 @@ import (
 )
 
 func main() {
+
+	// 初始化配置
 	setting.Setup()
+
+	// 初始化数据库
 	models.Setup()
+
+	// 初始化日志
 	logging.Setup()
 
 	// 启用redis

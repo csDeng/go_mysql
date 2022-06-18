@@ -20,6 +20,9 @@ var MsgFlags = map[int]string{
 
 	ERROR_ADD_ARTICLE: "添加文章失败",
 	ERROR_ADD_TAG:     "添加标签失败",
+
+	ERROR_TOKEN_CANNOTGETUSERINFO: "获取token的用户信息失败",
+	ERROR_TOKEN_ISNOTADMIN:        "您不是管理员哦！",
 }
 
 func GetMsg(code int) string {

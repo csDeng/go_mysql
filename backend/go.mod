@@ -49,5 +49,5 @@ replace (
 	github.com/csDeng/blog/pkg/util => ./pkg/util
 	github.com/csDeng/blog/routers => ./routers
 	github.com/csDeng/blog/routers/api => ./routers/api
-	github.com/csDeng/blog/routers/api/v1/ => ./routers/api/v1
+	
 )
