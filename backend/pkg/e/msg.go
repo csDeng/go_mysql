@@ -8,10 +8,6 @@ var MsgFlags = map[int]string{
 	ERROR_EXIST_TAG:                 "已存在该标签名称",
 	ERROR_NOT_EXIST_TAG:             "该标签不存在",
 	ERROR_NOT_EXIST_ARTICLE:         "该文章不存在",
-	ERROR_USER_CHECK_TOKEN_FAIL:     "Token鉴权失败",
-	ERROR_USER_CHECK_TOKEN_TIMEOUT:  "Token已超时",
-	ERROR_USER_TOKEN:                "Token生成失败",
-	ERROR_USER:                      "Token错误",
 	ERROR_USER_USERNAMEISEXISTED:    "用户名已存在",
 	ERROR_USER_USERISEISTEDBYID:     "当前id用户不存在",
 	ERROR_UPLOAD_SAVE_IMAGE_FAIL:    "保存图片失败",
@@ -21,8 +17,15 @@ var MsgFlags = map[int]string{
 	ERROR_ADD_ARTICLE: "添加文章失败",
 	ERROR_ADD_TAG:     "添加标签失败",
 
-	ERROR_TOKEN_CANNOTGETUSERINFO: "获取token的用户信息失败",
-	ERROR_TOKEN_ISNOTADMIN:        "您不是管理员哦！",
+	ERROR_TOKEN_CANNOTGETUSERINFO:  "获取token的用户信息失败",
+	ERROR_TOKEN_ISNOTADMIN:         "您不是管理员哦！",
+	ERROR_TOKEN_NOTEXIST:           "获取token失败",
+	USER_NOT_FOUND:                 "用户不存在",
+	USER_ADD_FAIL:                  "添加用户失败",
+	ERROR_USER_CHECK_TOKEN_FAIL:    "Token鉴权失败",
+	ERROR_USER_CHECK_TOKEN_TIMEOUT: "Token已超时",
+	ERROR_USER_TOKEN:               "Token生成失败",
+	ERROR_USER:                     "Token错误",
 }
 
 func GetMsg(code int) string {

@@ -29,8 +29,6 @@ func Setup() {
 	if err != nil {
 		log.Fatalln("链接数据库错误=> \r\n", err)
 	}
-	log.Println("=============")
-	log.Println(db)
 	/* 数据库迁移 */
 	db.AutoMigrate(
 		&User{},

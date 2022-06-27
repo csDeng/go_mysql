@@ -19,7 +19,7 @@ var validate *validator.Validate
 // 获取所有标签，或者根据query name进行查询
 func GetTags(c *gin.Context) {
 
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	name := c.Query("name")
 
 	maps := make(map[string]interface{})
@@ -44,7 +44,7 @@ func GetTags(c *gin.Context) {
 
 func AddTag(c *gin.Context) {
 	// 配置参数校验
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	validate = validator.New()
 	json := &models.Tag{}
 	c.BindJSON(json)
@@ -72,7 +72,7 @@ func AddTag(c *gin.Context) {
 }
 
 func EditTag(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	id := com.StrTo(c.Param("id")).MustInt()
 
 	validate = validator.New()
@@ -100,7 +100,7 @@ func EditTag(c *gin.Context) {
 }
 
 func DeleteTag(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	id := com.StrTo(c.Param("id")).MustInt()
 	var code int
 	var data = make(map[string]string)

@@ -15,7 +15,7 @@ import (
 var validate *validator.Validate
 
 func Refresh(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	code := e.SUCCESS
 	data := make(map[string]interface{})
 	token := c.Param("token")
@@ -30,7 +30,7 @@ func Refresh(c *gin.Context) {
 
 // 登录
 func GetUser(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 
 	json := &models.User{}
 
@@ -65,7 +65,7 @@ func GetUser(c *gin.Context) {
 
 // 注册
 func AddUser(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 
 	json := &models.User{}
 	c.BindJSON(json)

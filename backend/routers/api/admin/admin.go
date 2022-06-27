@@ -1,15 +1,19 @@
 package admin
 
 import (
-	"fmt"
 	"net/http"
 
+	"github.com/csDeng/blog/pkg/app"
+	"github.com/csDeng/blog/pkg/e"
+	"github.com/csDeng/blog/pkg/logging"
 	"github.com/gin-gonic/gin"
 )
 
 func ISADMIN(c *gin.Context) {
-	fmt.Println("hha")
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "I'm admin",
-	})
+	logging.Info("admin======")
+	appG := app.Gin{C: c}
+	code := e.SUCCESS
+	data := make(map[string]interface{})
+	data["msg"] = "I.m admin"
+	appG.Response(http.StatusOK, code, data)
 }

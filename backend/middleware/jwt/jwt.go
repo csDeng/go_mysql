@@ -19,7 +19,7 @@ func JWT() gin.HandlerFunc {
 		code = e.SUCCESS
 		token := c.GetHeader("Authorization")
 		if len(token) == 0 {
-			code = e.INVALID_PARAMS
+			code = e.ERROR_TOKEN_NOTEXIST
 		} else {
 			claims, err = util.ParseToken(token)
 			if err != nil {
@@ -37,15 +37,18 @@ func JWT() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
 		SetUserInfo(c)
 		c.Next()
 	}
 }
 
+// 往context里面挂载用户信息
 func SetUserInfo(c *gin.Context) {
 	c.Set("userinfo", claims)
 }
 
+// 获取context里面的用户信息
 func GetUserinfo(c *gin.Context) *util.Claims {
 	return c.MustGet("userinfo").(*util.Claims)
 }

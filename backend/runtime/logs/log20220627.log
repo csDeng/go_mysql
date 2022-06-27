@@ -1,0 +1,9 @@
+[ERROR][user.go:60]2022/06/27 16:24:58 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:60]2022/06/27 16:29:58 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:60]2022/06/27 16:30:03 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:60]2022/06/27 16:31:11 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:61]2022/06/27 16:32:42 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:61]2022/06/27 16:32:44 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:61]2022/06/27 16:32:55 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:61]2022/06/27 16:32:56 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag
+[ERROR][user.go:61]2022/06/27 16:35:00 Key: 'User.Password' Error:Field validation for 'Password' failed on the 'required' tag

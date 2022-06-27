@@ -9,8 +9,8 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `json:"username" validate:"required" gorm:"type:varchar(100);not null;"`
-	Password string `json:"password" validate:"required" gorm:"type:varchar(255);not null;"`
+	Username string `json:"username" binding:"required" gorm:"type:varchar(100);not null;"`
+	Password string `json:"password" binding:"required" gorm:"type:varchar(255);not null;"`
 	Level    string `json:"level" gorm:"type:char(1);default:'0';comment:'0是普通用户,1是管理员';"`
 }
 
@@ -53,6 +53,16 @@ func AddUser(username, password string) bool {
 	return true
 }
 
+func ADDUserWithLevel(user *User) bool {
+	fmt.Println(user)
+	if err := db.Omit("id").Create(user).Error; err != nil {
+		return false
+	}
+	return true
+
+}
+
+// 根据id获取用户信息
 func GetUserById(id int) (user User) {
 	db.Where("id = ?", id).First(&user)
 	return

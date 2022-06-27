@@ -28,7 +28,7 @@ type Article struct {
 
 // 获取首页的文章
 func GetArticleIndex(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	code := e.SUCCESS
 	data := make(map[string]interface{})
 	data["lists"] = models.GetArticleIndex()
@@ -38,7 +38,7 @@ func GetArticleIndex(c *gin.Context) {
 //获取单个文章
 // params : id
 func GetArticle(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	id := com.StrTo(c.Param("id")).MustInt()
 	code := 0
 	var data interface{}
@@ -67,7 +67,7 @@ state:
 tag_id
 */
 func GetArticles(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	data := make(map[string]interface{})
 	maps := make(map[string]interface{})
 
@@ -101,7 +101,7 @@ func GetArticles(c *gin.Context) {
 
 //新增文章
 func AddArticle(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	json := &Article{}
 	c.BindJSON(json)
 	data := make(map[string]interface{})
@@ -131,7 +131,7 @@ func AddArticle(c *gin.Context) {
 
 //修改文章
 func EditArticle(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 
 	validate = validator.New()
 	code := e.INVALID_PARAMS
@@ -172,7 +172,7 @@ func EditArticle(c *gin.Context) {
 
 //删除文章
 func DeleteArticle(c *gin.Context) {
-	appG := app.Gin{c}
+	appG := app.Gin{C: c}
 	id := com.StrTo(c.Param("id")).MustInt()
 	data := make(map[string]interface{})
 	code := e.INVALID_ID
